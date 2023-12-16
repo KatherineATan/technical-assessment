@@ -9,8 +9,8 @@ export class Quest {
     constructor(args) {
         this.id = uuid();
         this.name = args.name || 'Quest 1';
-        this.description = args.description || 'Indtroduction quest';
-        this.hero_id = args.hero_id || 'Hero ID'; // TODO somehow deg uuid from hero
+        this.description = args.description || 'Introduction quest';
+        this.hero_id = args.hero ? args.hero.id : '0';
     }
 
     /**

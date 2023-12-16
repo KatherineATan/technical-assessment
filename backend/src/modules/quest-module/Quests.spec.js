@@ -11,68 +11,89 @@ describe('Quest Module', () => {
         await request.post('/quests')
             .send({
                 name: 'Quest 2',
-                description: 'Intro',
-                hero_id: '', // TODO how to get hero id
+                description: 'Intro 2',
+                hero_id: '2', // TODO how to get hero id?
             });
         const res = await request.get('/quests');
         ID = res.body[0].id;
     });
 
-    // TODO change stuff under this to quest things
-
-    describe('GET /heros', () => {
-        it('should return a 200 for all heroes', done => {
-            request.get('/heroes')
-                .expect(200, done);
-        });
-    });
-    describe('GET /heroes/:id', () => {
-        it('should return a 200 for a found hero', done => {
-            request.get(`/heroes/${ID}`)
+    // TODO look over this get from hero_id
+    describe('GET /quests/:hero_id', () => {
+        it('should return a 200 for all quests for a found hero', done => {
+            request.get(`/quests/${hero_id}`)
                 .expect(200, done);
         });
         it('should return a 404 for not found hero', done => {
-            request.get('/heroes/abc')
+            request.get('/quests/abc')
+                .expect(404, done);
+        });
+    });
+    // TODO is this get needed?
+    describe('GET /quests/:id', () => {
+        it('should return a 200 for a found quest', done => {
+            request.get(`/quests/${quest_id}`)
+                .expect(200, done);
+        });
+        it('should return a 404 for not found quest', done => {
+            request.get('/quests/abc')
                 .expect(404, done);
         });
     });
 
-    describe('POST /heroes', () => {
-        it('should return a 201 for complete hero', done => {
-            request.post('/heroes')
+    // TODO does the hero_id have to be passed in?
+    describe('POST /quests/:hero_id', () => {
+        it('should return a 201 for complete quest with a found hero', done => {
+            request.post(`/quests/${hero_id}`)
                 .send({
-                    name: 'Gandalf',
-                    class: 'Mage',
-                    level: 100,
+                    name: 'Quest 3',
+                    description: 'Intro 3',
                 })
                 .expect(201, done);
         });
+        it('should return a 404 for a not found hero', done => {
+            request.post('/quests/abc')
+                .expect(404, done);
+        });
     });
 
-    describe(`PATCH /heroes/:id`, () => {
-        it('should return a 204 for a updated hero', done => {
-            request.patch(`/heroes/${ID}`)
+    // TODO probably have to pass in both hero_id and quest_id
+    describe(`PATCH /quests/:id`, () => {
+        it('should return a 204 for a updated quest', done => {
+            request.patch(`/quests/${ID}`)
                 .send({
-                    name: 'Conan'
+                    description: 'Defeat the dragon'
                 })
                 .expect(204, done);
         });
-        it('should return a 404 for a not found hero', done => {
-            request.patch(`/heroes/abc`)
+        it('should return a 400 when the route hero_id does not match the quests hero_id in database', done => {
+            request.patch(`/quests/abc`)
                 .send({
-                    class: 'Rogue'
+                    description: 'The last quest p1'
+                })
+                .expect(400, done);
+        });
+        it('should return a 404 for a not found hero or quest for the given ids', done => {
+            request.patch(`/quests/abc`)
+                .send({
+                    description: 'The last quest p2'
                 })
                 .expect(404, done);
         });
     });
 
-    describe('DELETE /heroes/:id', () => {
-        it('should return a 204 for a deleted hero', done => {
-            request.delete(`/heroes/${ID}`)
+    // TODO probably have to pass in both hero_id and quest_id
+    describe('DELETE /quests/:id', () => {
+        it('should return a 204 for a deleted quest', done => {
+            request.delete(`/quests/${ID}`)
                 .expect(204, done);
         });
-        it('should return a 404 for a not found hero', done => {
-            request.delete(`/heroes/${ID}`)
+        it('should return a 400 when the route hero_id does not match the quests hero_id in database', done => {
+            request.delete(`/quests/${ID}`)
+                .expect(400, done);
+        });
+        it('should return a 404 for a not found hero or quest for the given ids', done => {
+            request.delete(`/quests/${ID}`)
                 .expect(404, done);
         });
     });

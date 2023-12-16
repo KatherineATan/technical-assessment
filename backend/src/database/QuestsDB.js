@@ -16,29 +16,28 @@ export class QuestsDB {
         return this.instance;
     }
 
-    // TODO change the get commands to get quests for a hero_id
-
+    // TODO look over get method, make sure it returns all quests associated with the hero 
+    // (probably does bc the return statement with [])
     /**
-     * Gets all the heroes in the database
+     * Gets a quest for a hero with a hero id
      * 
-     * @returns {Hero[]} An array of heroes
+     * @param {string} hero_id 
+     * @returns {Quest[]} An array of quests for the hero with the specified id
      */
-    getHeroes() {
-        return this.heroes;
+    getQuests(hero_id) {
+        return this.quests.find(quest => quest.hero_id === hero_id);
     }
 
     /**
-     * Gets a hero with a specific id
+     * Gets a quest with a specified id
      * 
      * @param {string} id 
-     * @returns {Hero} A hero with the specified id
+     * @returns {Quest} A quest with the specified id
      */
-    getHero(id) {
-        return this.heroes.find(hero => hero.id === id);
+    getQuest(id) {
+        return this.quests.find(quest => quest.id === id);
     }
 
-
-    // TODO attach it to a quest
     /**
      * Adds a quest to the database
      * 
@@ -58,7 +57,7 @@ export class QuestsDB {
         const quest = this.getQuest(id);
         this.deleteQuest(id);
         quest.updateQuest(questUpdates);
-        this.createQuests(quest);
+        this.createQuest(quest);
     }
 
     /**
