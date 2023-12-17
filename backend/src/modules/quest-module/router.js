@@ -12,7 +12,7 @@ export function questsRouter() {
 
     // TODO: Task 1
     // Get all quests associated with a hero
-    router.get('/quests/:hero_id', (req, res) => {
+    router.get('/heroes/:id/quests', (req, res) => {
         const hero_id = req.params.hero_id;
         const quests = QuestsDB.getInstance().getQuests(hero_id);
     
@@ -26,12 +26,12 @@ export function questsRouter() {
     });
 
     // Gets a single quest by id
-    router.get('/quests/:id', (req, res) => {
+    router.get('/heroes/:hero_id/quests/:quest_id', (req, res) => {
         const quest_id = req.params.id;
         const quest = QuestsDB.getInstance().getQuest(quest_id);
 
-        // Return 404 if quest not found, else return quest
-        if (!quest) {
+        // Return 404 if quest or hero not found, else return quest
+        if (!quest || !hero) {
             res.sendStatus(404);
         } else {
             res.send(quest);
@@ -41,12 +41,12 @@ export function questsRouter() {
 
     // TODO: Task 2
     // Creates a quest associated with a hero
-    router.post('/quests/:hero_id', (req, res) => {
+    router.post('/heroes/:id/quests', (req, res) => {
         const body = req.body;
         const quest = new Quest(body);
 
         // Return 404 if hero not found, else add quest to database
-        if (!quest) {
+        if (!hero) {
             res.sendStatus(404);
         } else {
             QuestsDB.getInstance().createQuest(quest);
@@ -55,31 +55,41 @@ export function questsRouter() {
     });
 
     // TODO: Task 3
-    router.patch('/quests/:id', (req, res) => {
+    router.patch('/heroes/:hero_id/quests/:quest_id', (req, res) => {
         const id = req.params.id;
         const body = req.body;
-
         const quest = QuestsDB.getInstance().getQuest(id);
-        if (!quest) {
+
+        const route_hero_id = req.params.hero_id;
+        const quest_hero_id = quest.hero_id;
+
+        if (!quest || !hero) {
             res.sendStatus(404);
         } 
-        // TODO add else if for status 400
-        else {
+        // TODO is this the right not equals comparision for the id type
+        else if (route_hero_id != quest_hero_id) {
+            res.sendStatus(400);
+        } else {
             QuestsDB.getInstance().updateQuest(id, body);
             res.sendStatus(204);
         }
     });
 
     // TODO: Task 4
-    router.delete('/quests/:id', (req, res) => {
+    router.delete('/heroes/:hero_id/quests/:quest_id', (req, res) => {
         const id = req.params.id;
-
         const quest = QuestsDB.getInstance().getQuest(id);
-        if (!quest) {
+
+        const route_hero_id = req.params.hero_id;
+        const quest_hero_id = quest.hero_id;
+
+        if (!quest || !hero) {
             res.sendStatus(404);
         } 
-        // TODO add else if for status 400
-        else {
+        // TODO is this the right not equals comparision for the id type
+        else if (route_hero_id != quest_hero_id) {
+            res.sendStatus(400);
+        } else {
             QuestsDB.getInstance().deleteQuest(id);
             res.sendStatus(204);
         }
