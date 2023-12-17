@@ -10,7 +10,7 @@ export class Quest {
         this.id = uuid();
         this.name = args.name || 'Quest 1';
         this.description = args.description || 'Introduction quest';
-        this.hero_id = args.hero ? args.hero.id : '0';
+        this.hero_id = args.hero_id || '0';
     }
 
     /**
@@ -24,9 +24,6 @@ export class Quest {
         }
         if (args.description) {
             this.description = args.description;
-        }
-        if (args.hero_id) {
-            this.hero_id = args.hero_id;
         }
     }
 }

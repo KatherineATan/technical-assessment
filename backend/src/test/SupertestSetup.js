@@ -17,11 +17,8 @@ export function supertestSetup(router) {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(heroesRouter());
-    if (router) {
-        app.use(router);
-    }
-
     app.use(questsRouter());
+
     if (router) {
         app.use(router);
     }

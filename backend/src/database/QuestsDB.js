@@ -16,8 +16,6 @@ export class QuestsDB {
         return this.instance;
     }
 
-    // TODO look over get method, make sure it returns all quests associated with the hero 
-    // (probably does bc the return statement with [])
     /**
      * Gets a quest for a hero with a hero id
      * 
@@ -25,7 +23,7 @@ export class QuestsDB {
      * @returns {Quest[]} An array of quests for the hero with the specified id
      */
     getQuests(hero_id) {
-        return this.quests.find(quest => quest.hero_id === hero_id);
+        return this.quests.filter(quest => quest.hero_id === hero_id);
     }
 
     /**
