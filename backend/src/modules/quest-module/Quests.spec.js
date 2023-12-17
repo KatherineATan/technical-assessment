@@ -35,7 +35,7 @@ describe('Quest Module', () => {
         hero_id = res.body[0].hero_id;
     });
 
-    // TODO look over this get from hero_id
+    // Get all quests associated with a hero
     describe('GET /heroes/:hero_id/quests', () => {
         it('should return a 200 for all quests for a found hero', done => {
             request.get(`/heroes/${hero_id}/quests`)
@@ -47,6 +47,7 @@ describe('Quest Module', () => {
         });
     });
 
+    // Creates a quest associated with a hero
     describe('POST /heroes/:hero_id/quests', () => {
         it('should return a 201 for complete quest with a found hero', done => {
             request.post(`/heroes/${hero_id}/quests`)
@@ -63,6 +64,7 @@ describe('Quest Module', () => {
         });
     });
 
+    // Updates a quest
     describe(`PATCH /heroes/:hero_id/quests/:quest_id`, () => {
         it('should return a 204 for a updated quest', done => {
             request.patch(`/heroes/${hero_id}/quests/${quest_id}`)
@@ -94,6 +96,7 @@ describe('Quest Module', () => {
         });
     });
 
+    // Deletes a quest
     describe('DELETE /heroes/:hero_id/quests/:quest_id', () => {
         it('should return a 204 for a deleted quest', done => {
             request.delete(`/heroes/${hero_id}/quests/${quest_id}`)
